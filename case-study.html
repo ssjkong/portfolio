@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Case Study — Sharon S Kong</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --ink:          #1A1916;
+      --ink-mid:      #6B6860;
+      --ink-soft:     #9A9790;
+      --ink-ghost:    #9a9790;
+      --bg:           #FAFAF8;
+      --bg-warm:      #F5F3EE;
+      --bg-card:      #FFFFFF;
+      --border:       #E6E3DD;
+      --border-mid:   #D4D0C9;
+      --accent:       #F1625C;
+      --accent-light: #FDF0EF;
+      --accent-text:  #A82E29;
+    }
+
+    /* ─── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── NAV ────────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border);
+    }
+    .nav-logo {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-logo .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .nav-all-work {
+      font-size: 13px;
+      color: var(--ink-mid);
+      transition: color 120ms;
+    }
+    .nav-all-work:hover { color: var(--ink); }
+    .nav-next {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--ink-mid);
+      border: 0.5px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 999px;
+      transition: border-color 120ms, color 120ms;
+    }
+    .nav-next:hover { color: var(--ink); border-color: var(--border-mid); }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block;
+      height: 1px;
+      width: 100%;
+      background: var(--ink);
+      transition: transform 200ms ease, opacity 200ms ease;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    .nav-drawer {
+      display: none;
+      position: fixed;
+      top: 56px; left: 0; right: 0;
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border);
+      padding: 8px 0 16px;
+      z-index: 99;
+      flex-direction: column;
+    }
+    .nav-drawer.open { display: flex; }
+    .nav-drawer a { font-size: 15px; color: var(--ink-mid); padding: 12px 24px; }
+
+    /* ─── HEADER ─────────────────────────────────────────────── */
+    .cs-header {
+      padding: 40px 48px 0;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--ink-soft);
+      margin-bottom: 28px;
+    }
+    .breadcrumb a {
+      color: var(--ink-soft);
+      transition: color 120ms;
+    }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb-sep { color: var(--border-mid); }
+
+    .cs-title {
+      font-family: 'DM Sans', sans-serif;
+      font-style: normal;
+      font-size: 44px;
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      color: var(--ink);
+      margin-bottom: 16px;
+      max-width: 700px;
+    }
+    .cs-title em {
+      color: var(--accent);
+      font-style: normal;
+    }
+    .cs-subtitle {
+      font-size: 15px;
+      color: var(--ink-mid);
+      line-height: 1.65;
+      max-width: 600px;
+      margin-bottom: 40px;
+    }
+
+    .cs-meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 0.5px solid var(--border);
+      border-left: 0.5px solid var(--border);
+      margin-bottom: 0;
+    }
+    .cs-meta-item {
+      padding: 16px 20px;
+      border-right: 0.5px solid var(--border);
+      border-bottom: 0.5px solid var(--border);
+    }
+    .cs-meta-label {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-ghost);
+      margin-bottom: 4px;
+    }
+    .cs-meta-value {
+      font-size: 13px;
+      color: var(--ink);
+      font-weight: 400;
+    }
+
+    /* ─── BODY LAYOUT ────────────────────────────────────────── */
+    .cs-body {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 48px;
+      display: grid;
+      grid-template-columns: 168px 1fr;
+      gap: 0;
+      align-items: start;
+    }
+
+    .cs-sidebar {
+      position: sticky;
+      top: 56px;
+      padding: 40px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .sidebar-label {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-ghost);
+      margin-bottom: 16px;
+    }
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      text-align: left;
+    }
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px 9px 0;
+      cursor: pointer;
+      border-left: 2px solid transparent;
+      transition: border-color 120ms, background 120ms;
+      text-decoration: none;
+    }
+    .sidebar-item.active {
+      border-left-color: var(--accent);
+      background: var(--accent-light);
+      padding-left: 12px;
+    }
+    .sidebar-num {
+      font-size: 9px;
+      color: var(--ink-ghost);
+      width: 14px;
+      flex-shrink: 0;
+    }
+    .sidebar-item.active .sidebar-num { color: var(--accent-text); }
+    .sidebar-text {
+      font-size: 14px;
+      color: var(--ink-soft);
+      transition: color 120ms;
+    }
+    .sidebar-item.active .sidebar-text { color: var(--ink); font-weight: 500; }
+    .sidebar-item:hover:not(.active) .sidebar-text { color: var(--ink-mid); }
+
+    .sidebar-sub {
+      padding-top: 4px;
+      padding-bottom: 4px;
+      padding-left: 24px;
+    }
+    .sidebar-sub .sidebar-text { font-size: 12px; color: var(--ink-ghost); }
+    .sidebar-nav .sidebar-sub.active {
+      border-left-color: transparent;
+      background: transparent;
+    }
+    .sidebar-nav .sidebar-sub.active .sidebar-text { color: var(--ink-mid); }
+    .sidebar-sub:hover .sidebar-text { color: var(--ink-mid); }
+
+    /* ─── CONTENT ────────────────────────────────────────────── */
+    .cs-content {
+      padding: 40px 0 40px 44px;
+      border-left: 0.5px solid var(--border);
+      min-width: 0;
+      text-align: left;
+    }
+
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .section-divider:not(:first-child) { margin-top: 56px; }
+    .section-divider-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      white-space: nowrap;
+    }
+    .section-divider hr {
+      flex: 1;
+      border: none;
+      border-top: 0.5px solid var(--border);
+    }
+
+    .section-eyebrow {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+      text-align: left;
+    }
+    .section-title {
+      font-family: 'DM Sans', sans-serif;
+      font-style: normal;
+      font-size: 26px;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.4px;
+      color: var(--ink);
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .body-copy {
+      font-size: 14px;
+      color: var(--ink-mid);
+      line-height: 1.8;
+      margin-bottom: 16px;
+      text-wrap: pretty;
+      text-align: left;
+    }
+    .body-copy:last-child { margin-bottom: 0; }
+
+    /* ─── SINGLE IMAGE ───────────────────────────────────────── */
+    .cs-image {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 0.5px solid var(--border);
+      background: var(--bg-warm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      margin: 28px 0 10px;
+    }
+    .cs-image img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .stripe-bg {
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        -45deg,
+        var(--bg-warm) 0px, var(--bg-warm) 6px,
+        var(--border) 6px, var(--border) 7px
+      );
+    }
+    .img-label {
+      position: relative;
+      z-index: 1;
+      font-family: 'Courier New', monospace;
+      font-size: 10px;
+      color: var(--ink-ghost);
+      letter-spacing: 0.3px;
+    }
+    .cs-image-caption {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-ghost);
+      margin-bottom: 28px;
+      text-align: left;
+    }
+
+    /* ─── CAROUSEL ───────────────────────────────────────────── */
+    .cs-carousel {
+      width: 100%;
+      margin: 28px 0 10px;
+      position: relative;
+    }
+    .carousel-frame {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 0.5px solid var(--border);
+      background: var(--bg-warm);
+      overflow: hidden;
+      position: relative;
+    }
+    .carousel-track {
+      display: flex;
+      height: 100%;
+      transition: transform 200ms ease-out;
+    }
+    .carousel-slide {
+      flex-shrink: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .carousel-slide .stripe-bg { position: absolute; inset: 0; }
+    .carousel-slide .img-label { position: relative; z-index: 1; }
+    .carousel-slide img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      color: var(--ink-mid);
+      cursor: pointer;
+      z-index: 10;
+      font-size: 14px;
+      transition: color 120ms, border-color 120ms;
+      user-select: none;
+    }
+    .carousel-arrow:hover { color: var(--ink); border-color: var(--border-mid); }
+    .carousel-arrow.prev { left: 16px; }
+    .carousel-arrow.next { right: 16px; }
+    .carousel-arrow.disabled {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .carousel-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+    .carousel-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 999px;
+      background: var(--border-mid);
+      cursor: pointer;
+      transition: background 150ms;
+    }
+    .carousel-dot.active { background: var(--accent); }
+    .carousel-caption {
+      font-size: 11px;
+      color: var(--ink-ghost);
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    /* ─── QUOTE ──────────────────────────────────────────────── */
+    .cs-quote {
+      background: var(--accent-light);
+      border-left: 2px solid var(--accent);
+      padding: 24px 28px;
+      margin: 28px 0;
+    }
+    .cs-quote p {
+      font-family: 'DM Sans', sans-serif;
+      font-style: normal;
+      font-size: 17px;
+      line-height: 1.55;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+    .cs-quote cite {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent-text);
+      font-style: normal;
+    }
+
+    /* ─── OUTCOMES BLOCK ─────────────────────────────────────── */
+    .outcomes-block {
+      background: var(--bg-warm);
+      border: 0.5px solid var(--border);
+      padding: 32px;
+      margin: 28px 0;
+    }
+    .outcomes-eyebrow {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-ghost);
+      margin-bottom: 20px;
+    }
+    .outcomes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+    .outcome-item {
+      padding: 0 24px 0 0;
+      border-right: 0.5px solid var(--border);
+      margin-right: 24px;
+    }
+    .outcome-item:last-child {
+      border-right: none;
+      margin-right: 0;
+      padding-right: 0;
+    }
+    .outcome-number {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 36px;
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: -1px;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .outcome-label {
+      font-size: 11px;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      text-wrap: pretty;
+    }
+
+    /* ─── NEXT PROJECT ───────────────────────────────────────── */
+    .next-project {
+      border-top: 0.5px solid var(--border);
+      margin-top: 64px;
+    }
+    .next-project-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+    .next-label {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-ghost);
+      padding: 20px 0 0;
+      margin-bottom: 0;
+    }
+    .next-card {
+      display: grid;
+      grid-template-columns: 52px 1fr auto;
+      align-items: center;
+      gap: 20px;
+      padding: 20px 0 28px;
+      cursor: pointer;
+      transition: background 120ms;
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .next-card:hover { background: var(--bg-warm); margin: 0 -48px; padding-left: 48px; padding-right: 48px; }
+    .next-thumb {
+      width: 52px;
+      height: 52px;
+      background: var(--bg-warm);
+      border: 0.5px solid var(--border);
+      overflow: hidden;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .next-thumb .stripe-bg { position: absolute; inset: 0; }
+    .next-title {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: -0.3px;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+    .next-subtitle {
+      font-size: 12px;
+      color: var(--ink-soft);
+    }
+    .next-arrow {
+      font-size: 18px;
+      color: var(--border-mid);
+      transition: color 150ms, transform 150ms;
+    }
+    .next-card:hover .next-arrow { color: var(--ink); transform: translateX(3px); }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      border-top: 0.5px solid var(--border);
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-left, .footer-right {
+      font-size: 12px;
+      color: var(--ink-ghost);
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      .cs-header { padding: 32px 24px 0; }
+      .cs-title { font-size: 32px; }
+      .cs-subtitle { font-size: 14px; }
+      .cs-meta { grid-template-columns: repeat(2, 1fr); }
+      .cs-body { padding: 0 24px; grid-template-columns: 1fr; }
+      .cs-sidebar { display: none; }
+      .cs-content { padding: 32px 0; border-left: none; }
+      .next-project-inner { padding: 0 24px; }
+      footer { padding: 20px 24px; }
+      .outcomes-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 480px) {
+      nav { padding: 0 16px; }
+      .nav-right .nav-all-work { display: none; }
+      .nav-hamburger { display: flex; }
+      .cs-header { padding: 24px 16px 0; }
+      .cs-title { font-size: 26px; }
+      .cs-meta { grid-template-columns: repeat(2, 1fr); }
+      .cs-body { padding: 0 16px; }
+      .cs-content { padding: 24px 0; }
+      .outcomes-grid { grid-template-columns: 1fr; gap: 20px; }
+      .outcome-item { border-right: none; margin-right: 0; padding-right: 0; border-bottom: 0.5px solid var(--border); padding-bottom: 20px; }
+      .outcome-item:last-child { border-bottom: none; padding-bottom: 0; }
+      .next-project-inner { padding: 0 16px; }
+      footer { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAV ──────────────────────────────────────────────── -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <span class="dot"></span>
+      <span>Sharon S Kong</span>
+    </a>
+    <div class="nav-right">
+      <a href="index.html#work" class="nav-all-work">← All work</a>
+      <a href="#next-project" class="nav-next">Next project →</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="nav-drawer" id="nav-drawer">
+    <a href="index.html">Home</a>
+    <a href="index.html#work">All work</a>
+    <a href="about.html">About</a>
+    <a href="https://drive.google.com/file/d/1dvqH6lYQ_7dv0gXbxHfcCXoRDAYuYDX6/view?usp=sharing" target="_blank">Resume</a>
+  </div>
+
+  <!-- ─── HEADER ───────────────────────────────────────────── -->
+  <div class="cs-header">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Network Intelligence Dashboard</span>
+    </div>
+
+    <h1 class="cs-title">Redesigning <em>network intelligence</em><br>for IT administrators</h1>
+    <p class="cs-subtitle">How surfacing anomalies before escalation reduced time-to-insight for distributed fleet management.</p>
+
+    <div class="cs-meta">
+      <div class="cs-meta-item">
+        <div class="cs-meta-label">Role</div>
+        <div class="cs-meta-value">UX Design Lead</div>
+      </div>
+      <div class="cs-meta-item">
+        <div class="cs-meta-label">Company</div>
+        <div class="cs-meta-value">Cisco Meraki</div>
+      </div>
+      <div class="cs-meta-item">
+        <div class="cs-meta-label">Platform</div>
+        <div class="cs-meta-value">Web dashboard</div>
+      </div>
+      <div class="cs-meta-item">
+        <div class="cs-meta-label">Year</div>
+        <div class="cs-meta-value">2024</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── BODY ─────────────────────────────────────────────── -->
+  <div class="cs-body">
+
+    <aside class="cs-sidebar">
+      <div class="sidebar-label">Contents</div>
+      <nav class="sidebar-nav">
+        <a href="#section-problem" class="sidebar-item active" data-section="problem">
+          <span class="sidebar-num">01</span>
+          <span class="sidebar-text">Problem</span>
+        </a>
+        <a href="#section-process" class="sidebar-item" data-section="process">
+          <span class="sidebar-num">02</span>
+          <span class="sidebar-text">Process</span>
+        </a>
+        <a href="#section-process-research" class="sidebar-item sidebar-sub" data-section="process">
+          <span class="sidebar-num"></span>
+          <span class="sidebar-text">Research</span>
+        </a>
+        <a href="#section-process-prototyping" class="sidebar-item sidebar-sub" data-section="process">
+          <span class="sidebar-num"></span>
+          <span class="sidebar-text">Prototyping</span>
+        </a>
+        <a href="#section-process-testing" class="sidebar-item sidebar-sub" data-section="process">
+          <span class="sidebar-num"></span>
+          <span class="sidebar-text">Testing</span>
+        </a>
+        <a href="#section-outcomes" class="sidebar-item" data-section="outcomes">
+          <span class="sidebar-num">03</span>
+          <span class="sidebar-text">Outcomes</span>
+        </a>
+      </nav>
+    </aside>
+
+    <main class="cs-content">
+
+      <!-- ── PROBLEM ─────────────────────────────── -->
+      <div id="section-problem" data-screen-label="01 Problem">
+
+        <div class="section-divider">
+          <span class="section-divider-label">Problem</span>
+          <hr />
+        </div>
+
+        <div class="section-eyebrow">Finding</div>
+        <h2 class="section-title">IT admins were reacting to fires instead of preventing them</h2>
+        <p class="body-copy">Meraki's network monitoring dashboard had been built incrementally over years, resulting in an experience that surfaced raw data rather than actionable intelligence. Administrators managing hundreds of distributed devices were spending significant time diagnosing issues that had already escalated into outages.</p>
+        <p class="body-copy">The core problem: the system knew what was happening but didn't help users understand what it meant or what to do next. Every insight was buried two or three clicks deep.</p>
+
+        <div class="cs-image">
+          <div class="stripe-bg"></div>
+          <span class="img-label">[ current-state dashboard audit ]</span>
+        </div>
+        <div class="cs-image-caption">Fig 1 — Existing dashboard: data-rich, insight-poor</div>
+
+        <div class="cs-quote">
+          <p>"By the time the alert fires, the damage is already done. I need to see problems coming, not after the fact."</p>
+          <cite>IT administrator, interview session 3 of 14</cite>
+        </div>
+
+      </div>
+
+      <!-- ── PROCESS ────────────────────────────── -->
+      <div id="section-process" data-screen-label="02 Process">
+
+        <div class="section-divider">
+          <span class="section-divider-label">Process</span>
+          <hr />
+        </div>
+
+        <div id="section-process-research"></div>
+        <div class="section-eyebrow">Research</div>
+        <h2 class="section-title">14 interviews across 4 organization sizes.</h2>
+        <p class="body-copy">We mapped the full mental model of how IT administrators understand network health — what signals they trust, what they ignore, and how they decide when something needs attention. The pattern across organization sizes was consistent: admins had built personal workarounds because the product didn't support their actual workflow.</p>
+
+        <div id="section-process-prototyping" style="margin-top:32px;"></div>
+        <div class="section-eyebrow">Prototyping</div>
+        <h2 class="section-title">Three approaches to surfacing anomalies.</h2>
+        <p class="body-copy">We explored three directions with different philosophies on how to surface intelligence: a timeline-first approach, a topology-first approach, and a triage-queue model. Each was tested at low fidelity before committing to higher-resolution prototypes.</p>
+
+        <div class="cs-carousel">
+          <div class="carousel-frame">
+            <div class="carousel-track" id="carousel-track">
+              <div class="carousel-slide">
+                <div class="stripe-bg"></div>
+                <span class="img-label">[ research synthesis board ]</span>
+              </div>
+              <div class="carousel-slide">
+                <div class="stripe-bg"></div>
+                <span class="img-label">[ wireframe explorations A / B / C ]</span>
+              </div>
+              <div class="carousel-slide">
+                <div class="stripe-bg"></div>
+                <span class="img-label">[ prototype testing session ]</span>
+              </div>
+            </div>
+            <button class="carousel-arrow prev disabled" id="arrow-prev" aria-label="Previous">←</button>
+            <button class="carousel-arrow next" id="arrow-next" aria-label="Next">→</button>
+          </div>
+          <div class="carousel-dots" id="carousel-dots">
+            <div class="carousel-dot active" data-index="0"></div>
+            <div class="carousel-dot" data-index="1"></div>
+            <div class="carousel-dot" data-index="2"></div>
+          </div>
+          <div class="carousel-caption" id="carousel-caption">Research synthesis — affinity mapping across 14 interviews</div>
+        </div>
+
+        <div id="section-process-testing" style="margin-top:32px;"></div>
+        <div class="section-eyebrow">Testing</div>
+        <h2 class="section-title">Validated with 22 participants across 3 rounds.</h2>
+        <p class="body-copy">The triage-queue model consistently outperformed the alternatives — not because it was the most comprehensive, but because it matched how experienced administrators already thought. It gave names to the things they were already doing.</p>
+
+        <div class="cs-quote">
+          <p>"This is how I think about my network. I just didn't think software could think that way too."</p>
+          <cite>Senior network administrator, usability test round 2</cite>
+        </div>
+
+      </div>
+
+      <!-- ── OUTCOMES ──────────────────────────── -->
+      <div id="section-outcomes" data-screen-label="03 Outcomes">
+
+        <div class="section-divider">
+          <span class="section-divider-label">Outcomes</span>
+          <hr />
+        </div>
+
+        <div class="section-eyebrow">Results</div>
+        <h2 class="section-title">Shipped across enterprise and SMB tiers. Measured over 60 days.</h2>
+        <p class="body-copy">The redesigned intelligence layer launched with a phased rollout across fleet sizes. Support ticket volume, time-to-resolution, and NPS were tracked as primary signals.</p>
+
+        <div class="outcomes-block">
+          <div class="outcomes-eyebrow">Key results — 60-day post-launch</div>
+          <div class="outcomes-grid">
+            <div class="outcome-item">
+              <div class="outcome-number">−60%</div>
+              <div class="outcome-label">Reduction in time-to-insight for anomaly detection</div>
+            </div>
+            <div class="outcome-item">
+              <div class="outcome-number">−34%</div>
+              <div class="outcome-label">Support tickets related to missed alerts</div>
+            </div>
+            <div class="outcome-item">
+              <div class="outcome-number">+28</div>
+              <div class="outcome-label">Net Promoter Score points among power users</div>
+            </div>
+          </div>
+        </div>
+
+        <p class="body-copy">The broader organizational impact: the intelligence-first framing became a shared design principle applied to three subsequent feature areas by other teams, and was incorporated into the design system as a pattern category.</p>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ─── NEXT PROJECT ──────────────────────────────────────── -->
+  <div class="next-project" id="next-project">
+    <div class="next-project-inner">
+      <div class="next-label">Next project</div>
+      <a href="#" class="next-card">
+        <div class="next-thumb">
+          <div class="stripe-bg"></div>
+        </div>
+        <div class="next-info">
+          <div class="next-title">Zero-Touch Device Enrollment</div>
+          <div class="next-subtitle">Condensing a 40-step provisioning process into a guided setup</div>
+        </div>
+        <span class="next-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ─── FOOTER ────────────────────────────────────────────── -->
+  <footer>
+    <span class="footer-left">© 2026 Sharon S Kong</span>
+    <span class="footer-right">San Francisco, CA</span>
+  </footer>
+
+  <script>
+    (function() {
+      var btn = document.getElementById('hamburger');
+      var drawer = document.getElementById('nav-drawer');
+      if (!btn) return;
+      btn.addEventListener('click', function() {
+        var open = drawer.classList.toggle('open');
+        btn.classList.toggle('open', open);
+        btn.setAttribute('aria-expanded', open);
+      });
+      drawer.querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', function() {
+          drawer.classList.remove('open');
+          btn.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        });
+      });
+    })();
+
+    (function() {
+      var track   = document.getElementById('carousel-track');
+      var dots    = document.querySelectorAll('.carousel-dot');
+      var prevBtn = document.getElementById('arrow-prev');
+      var nextBtn = document.getElementById('arrow-next');
+      var caption = document.getElementById('carousel-caption');
+      var total   = dots.length;
+      var current = 0;
+
+      var captions = [
+        'Research synthesis — affinity mapping across 14 interviews',
+        'Wireframe explorations — Direction A, B, and C',
+        'Moderated usability test session, remote participants'
+      ];
+
+      function goTo(idx) {
+        current = idx;
+        track.style.transform = 'translateX(-' + (100 * current) + '%)';
+        dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
+        prevBtn.classList.toggle('disabled', current === 0);
+        nextBtn.classList.toggle('disabled', current === total - 1);
+        if (caption) caption.textContent = captions[current] || '';
+      }
+
+      prevBtn.addEventListener('click', function() { if (current > 0) goTo(current - 1); });
+      nextBtn.addEventListener('click', function() { if (current < total - 1) goTo(current + 1); });
+      dots.forEach(function(d) {
+        d.addEventListener('click', function() { goTo(parseInt(d.dataset.index)); });
+      });
+
+      goTo(0);
+    })();
+
+    (function() {
+      var items = document.querySelectorAll('.sidebar-item:not(.sidebar-sub)');
+
+      function onScroll() {
+        var scrollY = window.scrollY + 120;
+        var active = null;
+        ['problem', 'process', 'outcomes'].forEach(function(id) {
+          var el = document.getElementById('section-' + id);
+          if (el && el.offsetTop <= scrollY) active = id;
+        });
+        items.forEach(function(item) {
+          item.classList.toggle('active', item.dataset.section === active);
+        });
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+
+</body>
+</html>

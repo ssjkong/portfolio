@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simplifying networking for small businesses — Sharon S Kong</title>
+  <meta name="description" content="Portfolio of Sharon, a UX and product designer specializing in systems, strategy, and people." />
+  <link rel="icon" type="image/png" href="images/sskportfolio-favicon.png" />
+  <meta property="og:title" content="Simplifying networking for small businesses — Sharon S Kong" />
+  <meta property="og:description" content="Portfolio of Sharon, a UX and product designer specializing in systems, strategy, and people." />
+  <meta property="og:image" content="images/og-img.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --ink:          #1A1916;
+      --ink-mid:      #6B6860;
+      --ink-soft:     #9A9790;
+      --ink-ghost:    #9a9790;
+      --bg:           #FAFAF8;
+      --bg-warm:      #F5F3EE;
+      --bg-card:      #FFFFFF;
+      --border:       #E6E3DD;
+      --border-mid:   #D4D0C9;
+      --accent:       #F1625C;
+      --accent-light: #FDF0EF;
+      --accent-text:  #A82E29;
+    }
+
+    /* ─── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── NAV ────────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border);
+    }
+    .nav-logo {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-logo .dot {
+      width: 6px; height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .nav-all-work {
+      font-size: 13px;
+      color: var(--ink-mid);
+      transition: color 120ms;
+    }
+    .nav-all-work:hover { color: var(--ink); }
+    .nav-next {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--ink-mid);
+      border: 0.5px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 999px;
+      transition: border-color 120ms, color 120ms;
+    }
+    .nav-next:hover { color: var(--ink); border-color: var(--border-mid); }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 32px; height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block;
+      height: 1px; width: 100%;
+      background: var(--ink);
+      transition: transform 200ms ease, opacity 200ms ease;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    .nav-drawer {
+      display: none;
+      position: fixed;
+      top: 56px; left: 0; right: 0;
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border);
+      padding: 8px 0 16px;
+      z-index: 99;
+      flex-direction: column;
+    }
+    .nav-drawer.open { display: flex; }
+    .nav-drawer a { font-size: 15px; color: var(--ink-mid); padding: 12px 24px; }
+
+    /* ─── HEADER ─────────────────────────────────────────────── */
+    .cs-header {
+      padding: 40px 48px 0;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--ink-soft);
+      margin-bottom: 28px;
+    }
+    .breadcrumb a { color: var(--ink-soft); transition: color 120ms; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb-sep { color: var(--border-mid); }
+
+    .cs-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 44px;
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      color: var(--ink);
+      margin-bottom: 16px;
+      max-width: 700px;
+    }
+    .cs-subtitle {
+      font-size: 15px;
+      color: var(--ink-mid);
+      line-height: 1.65;
+      max-width: 620px;
+      margin-bottom: 40px;
+    }
+
+    .cs-meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 0.5px solid var(--border);
+      border-left: 0.5px solid var(--border);
+    }
+    .cs-meta-item {
+      padding: 16px 20px;
+      border-right: 0.5px solid var(--border);
+      border-bottom: 0.5px solid var(--border);
+    }
+    .cs-meta-label {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-ghost);
+      margin-bottom: 4px;
+    }
+    .cs-meta-value {
+      font-size: 13px;
+      color: var(--ink);
+    }
+
+    /* ─── BODY LAYOUT ────────────────────────────────────────── */
+    .cs-body {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 48px;
+      display: grid;
+      grid-template-columns: 168px 1fr;
+      align-items: start;
+    }
+
+    /* ─── SIDEBAR ────────────────────────────────────────────── */
+    .cs-sidebar {
+      position: sticky;
+      top: 56px;
+      padding: 40px 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-label {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-ghost);
+      margin-bottom: 16px;
+    }
+    .sidebar-nav { display: flex; flex-direction: column; border-bottom: none; }
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px 9px 0;
+      border-left: 2px solid transparent;
+      transition: border-color 120ms, background 120ms;
+      text-decoration: none;
+    }
+    .sidebar-item.active {
+      border-left-color: var(--accent);
+      background: var(--accent-light);
+      padding-left: 12px;
+    }
+    .sidebar-num {
+      font-size: 9px;
+      color: var(--ink-ghost);
+      width: 14px;
+      flex-shrink: 0;
+    }
+    .sidebar-item.active .sidebar-num { color: var(--accent-text); }
+    .sidebar-text {
+      font-size: 14px;
+      color: var(--ink-soft);
+      transition: color 120ms;
+    }
+    .sidebar-item.active .sidebar-text { color: var(--ink); font-weight: 500; }
+    .sidebar-item:hover:not(.active) .sidebar-text { color: var(--ink-mid); }
+
+    /* ─── CONTENT ────────────────────────────────────────────── */
+    .cs-content {
+      padding: 40px 0 80px 44px;
+      border-left: 0.5px solid var(--border);
+      min-width: 0;
+    }
+
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .section-divider:not(:first-child) { margin-top: 64px; }
+    .section-divider-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      white-space: nowrap;
+    }
+    .section-divider hr {
+      flex: 1;
+      border: none;
+      border-top: 0.5px solid var(--border);
+    }
+
+    .section-eyebrow {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+      margin-top: 48px;
+    }
+    .section-eyebrow:first-child { margin-top: 0; }
+
+    .section-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 26px;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.4px;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+
+    .body-copy {
+      font-size: 16px;
+      color: var(--ink-mid);
+      line-height: 1.8;
+      margin-bottom: 16px;
+      text-wrap: pretty;
+    }
+    .body-copy:last-child { margin-bottom: 0; }
+    .body-copy a {
+      color: var(--ink);
+      border-bottom: 0.5px solid var(--border-mid);
+      transition: color 120ms, border-color 120ms;
+    }
+    .body-copy a:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ─── CALLOUT ────────────────────────────────────────────── */
+    .cs-callout {
+      background: var(--bg-warm);
+      border-left: 2px solid var(--border-mid);
+      padding: 20px 24px;
+      margin: 28px 0;
+    }
+    .cs-callout p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink);
+      font-style: italic;
+    }
+
+    /* ─── IMAGES ─────────────────────────────────────────────── */
+    .cs-image {
+      width: 100%;
+      border: 0.5px solid var(--border);
+      background: var(--bg-warm);
+      overflow: hidden;
+      margin: 28px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .cs-image img {
+      width: auto;
+      max-width: 100%;
+      display: block;
+      cursor: zoom-in;
+    }
+    .cs-image-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 28px 0;
+    }
+    .cs-image-grid img {
+      width: 100%;
+      display: block;
+      border: 0.5px solid var(--border);
+      cursor: zoom-in;
+    }
+
+    /* ─── CAROUSEL ───────────────────────────────────────────── */
+    .cs-carousel {
+      width: 100%;
+      margin: 28px 0;
+    }
+    .carousel-frame {
+      width: 100%;
+      border: 0.5px solid var(--border);
+      background: var(--bg-warm);
+      overflow: hidden;
+      position: relative;
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform 200ms ease-out;
+    }
+    .carousel-slide {
+      flex-shrink: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .carousel-slide img {
+      width: auto;
+      max-width: 100%;
+      display: block;
+      cursor: zoom-in;
+    }
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 32px; height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      color: var(--ink-mid);
+      cursor: pointer;
+      z-index: 10;
+      font-size: 14px;
+      transition: color 120ms, border-color 120ms;
+      user-select: none;
+    }
+    .carousel-arrow:hover { color: var(--ink); border-color: var(--border-mid); }
+    .carousel-arrow.prev { left: 16px; }
+    .carousel-arrow.next { right: 16px; }
+    .carousel-arrow.disabled { opacity: 0.3; pointer-events: none; }
+    .carousel-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 12px;
+    }
+    .carousel-dot {
+      width: 5px; height: 5px;
+      border-radius: 999px;
+      background: var(--border-mid);
+      cursor: pointer;
+      transition: background 150ms;
+    }
+    .carousel-dot.active { background: var(--accent); }
+    .carousel-caption {
+      font-size: 11px;
+      color: var(--ink-ghost);
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    /* ─── LIGHTBOX ───────────────────────────────────────────── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(26, 25, 22, 0.92);
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.4);
+    }
+    .lightbox-close {
+      position: fixed;
+      top: 20px; right: 24px;
+      width: 36px; height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: 0.5px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.7);
+      font-size: 18px;
+      cursor: pointer;
+      transition: color 120ms, border-color 120ms;
+      line-height: 1;
+    }
+    .lightbox-close:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+
+    /* ─── NEXT PROJECT ───────────────────────────────────────── */
+    .next-project {
+      border-top: 0.5px solid var(--border);
+      margin-top: 64px;
+    }
+    .next-project-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+    .next-label {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-ghost);
+      padding: 20px 0 0;
+    }
+    .next-card {
+      display: grid;
+      grid-template-columns: 52px 1fr auto;
+      align-items: center;
+      gap: 20px;
+      padding: 20px 0 28px;
+      text-decoration: none;
+      color: var(--ink);
+      transition: background 120ms;
+    }
+    .next-card:hover { background: var(--bg-warm); margin: 0 -48px; padding-left: 48px; padding-right: 48px; }
+    .next-thumb {
+      width: 52px; height: 52px;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 0.5px solid var(--border);
+    }
+    .next-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .next-title {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: -0.3px;
+      margin-bottom: 2px;
+    }
+    .next-subtitle { font-size: 12px; color: var(--ink-soft); }
+    .next-arrow {
+      font-size: 18px;
+      color: var(--border-mid);
+      transition: color 150ms, transform 150ms;
+    }
+    .next-card:hover .next-arrow { color: var(--ink); transform: translateX(3px); }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      border-top: 0.5px solid var(--border);
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-left, .footer-right { font-size: 12px; color: var(--ink-ghost); }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      .cs-header { padding: 32px 24px 0; }
+      .cs-title { font-size: 32px; }
+      .cs-meta { grid-template-columns: repeat(2, 1fr); }
+      .cs-body { padding: 0 24px; grid-template-columns: 1fr; }
+      .cs-sidebar { display: none; }
+      .cs-content { padding: 32px 0 64px; border-left: none; }
+      .next-project-inner { padding: 0 24px; }
+      footer { padding: 20px 24px; }
+    }
+
+    @media (max-width: 480px) {
+      nav { padding: 0 16px; }
+      .nav-right .nav-all-work { display: none; }
+      .nav-hamburger { display: flex; }
+      .cs-header { padding: 24px 16px 0; }
+      .cs-title { font-size: 26px; letter-spacing: -1px; }
+      .cs-meta { grid-template-columns: repeat(2, 1fr); }
+      .cs-body { padding: 0 16px; }
+      .cs-content { padding: 24px 0 48px; }
+      .next-project-inner { padding: 0 16px; }
+      footer { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAV ──────────────────────────────────────────────── -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <span class="dot"></span>
+      <span>Sharon S Kong</span>
+    </a>
+    <div class="nav-right">
+      <a href="index.html#work" class="nav-all-work">← All work</a>
+      <a href="#next-project" class="nav-next">Next project →</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="nav-drawer" id="nav-drawer">
+    <a href="index.html">Home</a>
+    <a href="index.html#work">All work</a>
+    <a href="about.html">About</a>
+    <a href="https://drive.google.com/file/d/1dvqH6lYQ_7dv0gXbxHfcCXoRDAYuYDX6/view?usp=sharing" target="_blank">Resume</a>
+  </div>
+
+  <!-- ─── HEADER ───────────────────────────────────────────── -->
+  <div class="cs-header">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Meraki Go</span>
+    </div>
+
+    <h1 class="cs-title">Simplifying networking for small businesses</h1>
+    <p class="cs-subtitle">Bringing enterprise-grade WiFi management to small business owners who just want it to work.</p>
+
+    <div class="cs-meta">
+      <div class="cs-meta-item">
+        <div class="cs-meta-label">Role</div>
+        <div class="cs-meta-value">Lead Designer</div>
+      </div>
+      <div class="cs-meta-item">
+        <div class="cs-meta-label">Company</div>
+        <div class="cs-meta-value">Cisco Meraki</div>
+      </div>
+      <div class="cs-meta-item">
+        <div class="cs-meta-label">Platform</div>
+        <div class="cs-meta-value">iOS, Android</div>
+      </div>
+      <div class="cs-meta-item">
+        <div class="cs-meta-label">Year</div>
+        <div class="cs-meta-value">2019</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── BODY ─────────────────────────────────────────────── -->
+  <div class="cs-body">
+
+    <!-- Sidebar -->
+    <aside class="cs-sidebar">
+      <div class="sidebar-label">Contents</div>
+      <nav class="sidebar-nav">
+        <a href="#section-problem" class="sidebar-item active" data-section="problem">
+          <span class="sidebar-num">01</span>
+          <span class="sidebar-text">Problem</span>
+        </a>
+        <a href="#section-process" class="sidebar-item" data-section="process">
+          <span class="sidebar-num">02</span>
+          <span class="sidebar-text">Process</span>
+        </a>
+        <a href="#section-outcomes" class="sidebar-item" data-section="outcomes">
+          <span class="sidebar-num">03</span>
+          <span class="sidebar-text">Outcomes</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Content -->
+    <main class="cs-content">
+
+      <!-- ── PROBLEM ─────────────────────────────── -->
+      <div id="section-problem">
+
+        <div class="section-divider">
+          <span class="section-divider-label">Problem</span>
+          <hr />
+        </div>
+
+        <h2 class="section-title">Cisco Meraki makes some of the most powerful networking hardware in the world — but its products are built for IT professionals managing fleets of devices across enterprise infrastructure.</h2>
+        <p class="body-copy">When the team was tasked with creating a down-market consumer product for small business owners, the initial approach was simple: strip down the existing enterprise Dashboard and ship it.</p>
+        <p class="body-copy">It wasn't working. Users didn't understand it. That's when they brought me in.</p>
+        <p class="body-copy">This project was a first for Meraki in more ways than one — not just a new product, but the company's first real foray into consumer product design. My job was to rethink who we were designing for and build something that actually fit their lives.</p>
+
+        <div class="cs-image">
+          <img src="images/mkigo-website.png" alt="Meraki Go marketing website" />
+        </div>
+
+      </div>
+
+      <!-- ── PROCESS ────────────────────────────── -->
+      <div id="section-process">
+
+        <div class="section-divider">
+          <span class="section-divider-label">Process</span>
+          <hr />
+        </div>
+
+        <div class="section-eyebrow">Discover</div>
+        <p class="body-copy">Before touching the interface, I needed to understand the people we were building for. I partnered with the PM to go find them — online and in-person. We walked into cafes, retail stores, and even a boba shop, asked if we could see their networking setup, and just talked to them about how they managed it.</p>
+        <p class="body-copy">We found that small business owners generally fell into two groups:</p>
+
+        <div class="cs-callout">
+          <p><strong>The DIY Owner</strong> — scrappy, entrepreneurial, willing to learn if it saves money. They knew guest WiFi was becoming standard, but weren't always sure how to set it up securely. Some were letting customers onto their main network without realizing the risk. Others avoided the whole thing out of fear of neighbors freeloading on their connection.</p>
+        </div>
+
+        <div class="cs-callout">
+          <p><strong>The Hands-Off Owner</strong> — more complex needs, less appetite for figuring it out. They'd rather call someone. These users were better served by the enterprise product.</p>
+        </div>
+
+        <p class="body-copy">We made a deliberate call to design for the first group. Knowing who we weren't building for gave us the clarity to make subsequent decisions with confidence.</p>
+
+        <div class="section-eyebrow">Define</div>
+        <p class="body-copy">Based on the research, the team aligned on a few defining principles:</p>
+        <ul class="body-copy" style="padding-left: 20px;">
+          <li><strong>Mobile-only.</strong> Small business owners aren't sitting at a desk managing a dashboard. They're often on the floor, in the back, on the go.</li>
+          <li><strong>Plain language over technical jargon.</strong> No SSIDs, no subnets. Just "WiFi networks" and concepts people already understood.</li>
+          <li><strong>Simplified feature set by design.</strong> An intentionally designed set of helpful features to block out the noise.</li>
+        </ul>
+
+        <h2 class="section-title">But how could we simplify something as overwhelming as the enterprise Dashboard?</h2>
+        <p class="body-copy">To prove the concept, I built a quick prototype: a simple onboarding flow and a connected devices list that explained WiFi networks in plain terms. We tested it with a small group of local IT consultants that serviced small businesses and they provided detailed feedback on what they and SMBs needed. If a business needed more, that's what the enterprise product was for.</p>
+
+        <div class="cs-image">
+          <img src="images/mkigo-research.png" alt="Research notes and synthesis from small business owner interviews" />
+        </div>
+
+        <h2 class="section-title">The prototype changed the energy of the project team.</h2>
+        <p class="body-copy">That early proof of concept became the evidence that helped leadership see we needed dedicated mobile engineers — headcount we got, and that made the real build possible. The team felt like underdogs. Giving them a product vision they could believe in and seeing how users responded gave them something to rally around.</p>
+
+        <div class="section-eyebrow">Develop</div>
+        <p class="body-copy">With the foundation validated, I moved into designing the full app experience.</p>
+
+        <div class="cs-image">
+          <img src="images/mkigo-touchpoints-whiteboard.jpg" alt="Whiteboard session mapping touchpoints across the Meraki Go experience" />
+        </div>
+
+        <h2 class="section-title">Onboarding was a priority.</h2>
+        <p class="body-copy">Setting up networking hardware is intimidating, and we needed users to feel confident from the first box-open moment. I created illustrations and simple animations to walk users through physical setup, explain concepts like mesh routing in visual terms, and reduce the anxiety of doing something technical for the first time. In testing, users consistently understood what they needed to do.</p>
+
+        <div class="cs-image">
+          <img src="images/mkigo-onboarding.png" alt="Meraki Go onboarding flow screens" />
+        </div>
+
+        <h2 class="section-title">Cross-functional coordination was a significant part of my role.</h2>
+        <p class="body-copy">I worked with the marketing design team to expand their brand system — taking the logo and color palette they'd established and building it out into a simple design system for the app.</p>
+
+        <div class="cs-image">
+          <img src="images/mkigo-colorsfonts.png" alt="Meraki Go design system — colors and typography" />
+        </div>
+
+        <p class="body-copy">I also worked with the hardware and packaging team to make sure the in-box setup guide and the app told the same story, used the same language, and worked seamlessly.</p>
+
+        <div class="cs-image">
+          <img src="images/mkigo-hardwareinstall.png" alt="Meraki Go hardware install guide" />
+        </div>
+
+        <h2 class="section-title">Next was the WiFi management screens and workflows.</h2>
+
+        <div class="cs-image-grid">
+          <img src="images/mkigo-client.png" alt="Meraki Go — connected clients view" />
+          <img src="images/mkigo-usage.png" alt="Meraki Go — network usage insights" />
+        </div>
+
+        <div class="section-eyebrow">Deliver</div>
+        <p class="body-copy">Some notable callouts from the final feature set reflected exactly what the research had surfaced:</p>
+        <ul class="body-copy" style="padding-left: 20px;">
+          <li>Easy guest WiFi setup, clearly separated from secure internal networks (point-of-sale, private systems)</li>
+          <li>Bandwidth notification options — alerts when a single device was "hogging" the network</li>
+          <li>Auto-kick after a set time, so a table camper couldn't monopolize bandwidth all day</li>
+          <li>Enhanced security layers for sensitive businesses like dental clinics and law offices</li>
+          <li>Business insights: peak traffic hours based on device activity (before Google Maps rolled out their Popular Times feature)</li>
+          <li>And more.</li>
+        </ul>
+
+        <p class="body-copy">I moved on to other projects at Meraki, but the team finalized the build and launched a successful beta, followed by a series of international product launches.</p>
+
+        <div class="cs-image">
+          <img src="images/mkigo-betadoc.png" alt="Meraki Go beta launch documentation" style="max-width: 70%;" />
+        </div>
+
+      </div>
+
+      <!-- ── OUTCOMES ──────────────────────────── -->
+      <div id="section-outcomes">
+
+        <div class="section-divider">
+          <span class="section-divider-label">Outcomes</span>
+          <hr />
+        </div>
+
+        <div class="cs-callout">
+          <p>It is working like a dream. It was amazingly easy to set up. Even a "non techie" person like me can set it up easily. Plug it in and download the app and it basically walks you through the steps. Very simple.</p>
+          <p style="font-style: normal; margin-top: 12px; font-size: 13px; color: var(--ink-mid);"><strong>Dr. David DeLong</strong>, Dentist in Santa Clara</p>
+        </div>
+
+        <p class="body-copy">Meraki Go met its goals in the US market and unexpectedly became a significant success in Japan, where it continues to be sold today.</p>
+
+        <div class="cs-image">
+          <img src="images/mkigo-japansite.jpg" alt="Meraki Go Japan marketing site" />
+        </div>
+
+        <p class="body-copy">The product line was eventually sunset, but its impact didn't stop there.</p>
+        <h2 class="section-title">The mobile app screens, patterns, and workflows we designed and built for Meraki Go became the foundation for Cisco Meraki's first-ever mobile app for its enterprise Dashboard — the product that started all of this.</h2>
+        <p class="body-copy">The consumer work fed back upstream.</p>
+        <p class="body-copy">This project is proof that strong UX isn't just about making things look good. It's about getting out of the building, understanding who you're really designing for, and having the conviction to make decisions that simplify rather than accommodate everything. It's also a reminder that consumer product thinking — like clarity and accessibility — makes enterprise products better too.</p>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ─── NEXT PROJECT ──────────────────────────────────────── -->
+  <div class="next-project" id="next-project">
+    <div class="next-project-inner">
+      <div class="next-label">Next project</div>
+      <a href="magds.html" class="next-card">
+        <div class="next-thumb">
+          <img src="images/magds.png" alt="Meraki Design Language System" />
+        </div>
+        <div class="next-info">
+          <div class="next-title">Meraki Design Language System</div>
+          <div class="next-subtitle">Design systems: creating order out of chaos</div>
+        </div>
+        <span class="next-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ─── FOOTER ────────────────────────────────────────────── -->
+  <footer>
+    <span class="footer-left">© 2026 Sharon S Kong</span>
+    <span class="footer-right">San Francisco, CA</span>
+  </footer>
+
+  <script>
+    // ── Lightbox ───────────────────────────────────────────────
+    (function() {
+      var lb = document.createElement('div');
+      lb.className = 'lightbox';
+      lb.innerHTML = '<button class="lightbox-close" aria-label="Close">✕</button><img />';
+      document.body.appendChild(lb);
+      var lbImg = lb.querySelector('img');
+      function open(src, alt) {
+        lbImg.src = src; lbImg.alt = alt || '';
+        lb.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function close() {
+        lb.classList.remove('open');
+        document.body.style.overflow = '';
+        lbImg.src = '';
+      }
+      document.querySelectorAll('.cs-image img, .cs-image-grid img, .carousel-slide img').forEach(function(img) {
+        img.addEventListener('click', function(e) { e.stopPropagation(); open(img.src, img.alt); });
+      });
+      lb.querySelector('.lightbox-close').addEventListener('click', close);
+      lb.addEventListener('click', function(e) { if (e.target === lb) close(); });
+      document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close(); });
+    })();
+
+    // ── Hamburger ──────────────────────────────────────────────
+    (function() {
+      var btn = document.getElementById('hamburger');
+      var drawer = document.getElementById('nav-drawer');
+      if (!btn) return;
+      btn.addEventListener('click', function() {
+        var open = drawer.classList.toggle('open');
+        btn.classList.toggle('open', open);
+        btn.setAttribute('aria-expanded', open);
+      });
+      drawer.querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', function() {
+          drawer.classList.remove('open');
+          btn.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        });
+      });
+    })();
+
+    // ── Carousels ──────────────────────────────────────────────
+    document.querySelectorAll('.cs-carousel').forEach(function(carousel) {
+      var track   = carousel.querySelector('.carousel-track');
+      var dots    = carousel.querySelectorAll('.carousel-dot');
+      var prevBtn = carousel.querySelector('.carousel-arrow.prev');
+      var nextBtn = carousel.querySelector('.carousel-arrow.next');
+      var caption = carousel.querySelector('.carousel-caption');
+      var total   = dots.length;
+      var current = 0;
+      var captions = Array.from(dots).map(function(d, i) {
+        var slide = track.querySelectorAll('.carousel-slide')[i];
+        return slide ? (slide.querySelector('img') || {}).alt || '' : '';
+      });
+      function goTo(idx) {
+        current = idx;
+        track.style.transform = 'translateX(-' + (100 * current) + '%)';
+        dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
+        prevBtn.classList.toggle('disabled', current === 0);
+        nextBtn.classList.toggle('disabled', current === total - 1);
+        if (caption) caption.textContent = captions[current] || '';
+      }
+      prevBtn.addEventListener('click', function() { if (current > 0) goTo(current - 1); });
+      nextBtn.addEventListener('click', function() { if (current < total - 1) goTo(current + 1); });
+      dots.forEach(function(d) {
+        d.addEventListener('click', function() { goTo(parseInt(d.dataset.index)); });
+      });
+      goTo(0);
+    });
+
+    // ── Sidebar scrollspy ──────────────────────────────────────
+    (function() {
+      var items = document.querySelectorAll('.sidebar-item');
+      function onScroll() {
+        var scrollY = window.scrollY + 120;
+        var active = null;
+        ['problem', 'process', 'outcomes'].forEach(function(id) {
+          var el = document.getElementById('section-' + id);
+          if (el && el.offsetTop <= scrollY) active = id;
+        });
+        items.forEach(function(item) {
+          item.classList.toggle('active', item.dataset.section === active);
+        });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+
+</body>
+</html>

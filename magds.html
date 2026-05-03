@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design systems: creating order out of chaos — Sharon S Kong</title>
+  <meta name="description" content="Portfolio of Sharon, a UX and product designer specializing in systems, strategy, and people." />
+  <link rel="icon" type="image/png" href="images/sskportfolio-favicon.png" />
+  <meta property="og:title" content="Design systems: creating order out of chaos — Sharon S Kong" />
+  <meta property="og:description" content="Portfolio of Sharon, a UX and product designer specializing in systems, strategy, and people." />
+  <meta property="og:image" content="images/og-img.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --ink:          #1A1916;
+      --ink-mid:      #6B6860;
+      --ink-soft:     #9A9790;
+      --ink-ghost:    #9a9790;
+      --bg:           #FAFAF8;
+      --bg-warm:      #F5F3EE;
+      --bg-card:      #FFFFFF;
+      --border:       #E6E3DD;
+      --border-mid:   #D4D0C9;
+      --accent:       #F1625C;
+      --accent-light: #FDF0EF;
+      --accent-text:  #A82E29;
+    }
+
+    /* ─── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── NAV ────────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border);
+    }
+    .nav-logo {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-logo .dot {
+      width: 6px; height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .nav-all-work {
+      font-size: 13px;
+      color: var(--ink-mid);
+      transition: color 120ms;
+    }
+    .nav-all-work:hover { color: var(--ink); }
+    .nav-next {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--ink-mid);
+      border: 0.5px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 999px;
+      transition: border-color 120ms, color 120ms;
+    }
+    .nav-next:hover { color: var(--ink); border-color: var(--border-mid); }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 32px; height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block;
+      height: 1px; width: 100%;
+      background: var(--ink);
+      transition: transform 200ms ease, opacity 200ms ease;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    .nav-drawer {
+      display: none;
+      position: fixed;
+      top: 56px; left: 0; right: 0;
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border);
+      padding: 8px 0 16px;
+      z-index: 99;
+      flex-direction: column;
+    }
+    .nav-drawer.open { display: flex; }
+    .nav-drawer a { font-size: 15px; color: var(--ink-mid); padding: 12px 24px; }
+
+    /* ─── HEADER ─────────────────────────────────────────────── */
+    .cs-header {
+      padding: 40px 48px 0;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--ink-soft);
+      margin-bottom: 28px;
+    }
+    .breadcrumb a { color: var(--ink-soft); transition: color 120ms; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb-sep { color: var(--border-mid); }
+
+    .cs-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 44px;
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      color: var(--ink);
+      margin-bottom: 16px;
+      max-width: 700px;
+    }
+    .cs-subtitle {
+      font-size: 15px;
+      color: var(--ink-mid);
+      line-height: 1.65;
+      max-width: 620px;
+      margin-bottom: 40px;
+    }
+
+    .cs-meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 0.5px solid var(--border);
+      border-left: 0.5px solid var(--border);
+    }
+    .cs-meta-item {
+      padding: 16px 20px;
+      border-right: 0.5px solid var(--border);
+      border-bottom: 0.5px solid var(--border);
+    }
+    .cs-meta-label {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-ghost);
+      margin-bottom: 4px;
+    }
+    .cs-meta-value {
+      font-size: 13px;
+      color: var(--ink);
+    }
+
+    /* ─── BODY LAYOUT ────────────────────────────────────────── */
+    .cs-body {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 48px;
+      display: grid;
+      grid-template-columns: 168px 1fr;
+      align-items: start;
+    }
+
+    /* ─── SIDEBAR ────────────────────────────────────────────── */
+    .cs-sidebar {
+      position: sticky;
+      top: 56px;
+      padding: 40px 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-label {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-ghost);
+      margin-bottom: 16px;
+    }
+    .sidebar-nav { display: flex; flex-direction: column; border-bottom: none; }
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px 9px 0;
+      border-left: 2px solid transparent;
+      transition: border-color 120ms, background 120ms;
+      text-decoration: none;
+    }
+    .sidebar-item.active {
+      border-left-color: var(--accent);
+      background: var(--accent-light);
+      padding-left: 12px;
+    }
+    .sidebar-num {
+      font-size: 9px;
+      color: var(--ink-ghost);
+      width: 14px;
+      flex-shrink: 0;
+    }
+    .sidebar-item.active .sidebar-num { color: var(--accent-text); }
+    .sidebar-text {
+      font-size: 14px;
+      color: var(--ink-soft);
+      transition: color 120ms;
+    }
+    .sidebar-item.active .sidebar-text { color: var(--ink); font-weight: 500; }
+    .sidebar-item:hover:not(.active) .sidebar-text { color: var(--ink-mid); }
+
+    /* ─── CONTENT ────────────────────────────────────────────── */
+    .cs-content {
+      padding: 40px 0 80px 44px;
+      border-left: 0.5px solid var(--border);
+      min-width: 0;
+    }
+
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .section-divider:not(:first-child) { margin-top: 64px; }
+    .section-divider-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      white-space: nowrap;
+    }
+    .section-divider hr {
+      flex: 1;
+      border: none;
+      border-top: 0.5px solid var(--border);
+    }
+
+    .section-eyebrow {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+      margin-top: 48px;
+    }
+    .section-eyebrow:first-child { margin-top: 0; }
+
+    .section-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 26px;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.4px;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+    .body-copy {
+      font-size: 16px;
+      color: var(--ink-mid);
+      line-height: 1.8;
+      margin-bottom: 16px;
+      text-wrap: pretty;
+    }
+    .body-copy:last-child { margin-bottom: 0; }
+    .body-copy a {
+      color: var(--ink);
+      border-bottom: 0.5px solid var(--border-mid);
+      transition: color 120ms, border-color 120ms;
+    }
+    .body-copy a:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ─── IMAGES ─────────────────────────────────────────────── */
+    .cs-image {
+      width: 100%;
+      border: 0.5px solid var(--border);
+      background: var(--bg-warm);
+      overflow: hidden;
+      margin: 28px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .cs-image img {
+      width: auto;
+      max-width: 100%;
+      display: block;
+    }
+
+    .cs-image-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 28px 0;
+    }
+    .cs-image-pair img {
+      width: 100%;
+      display: block;
+      border: 0.5px solid var(--border);
+    }
+
+    /* ─── CAROUSEL ───────────────────────────────────────────── */
+    .cs-carousel {
+      width: 100%;
+      margin: 28px 0;
+    }
+    .carousel-frame {
+      width: 100%;
+      border: 0.5px solid var(--border);
+      background: var(--bg-warm);
+      overflow: hidden;
+      position: relative;
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform 200ms ease-out;
+    }
+    .carousel-slide {
+      flex-shrink: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .carousel-slide img {
+      width: auto;
+      max-width: 100%;
+      display: block;
+    }
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 32px; height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card);
+      border: 0.5px solid var(--border);
+      color: var(--ink-mid);
+      cursor: pointer;
+      z-index: 10;
+      font-size: 14px;
+      transition: color 120ms, border-color 120ms;
+      user-select: none;
+    }
+    .carousel-arrow:hover { color: var(--ink); border-color: var(--border-mid); }
+    .carousel-arrow.prev { left: 16px; }
+    .carousel-arrow.next { right: 16px; }
+    .carousel-arrow.disabled { opacity: 0.3; pointer-events: none; }
+    .carousel-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 12px;
+    }
+    .carousel-dot {
+      width: 5px; height: 5px;
+      border-radius: 999px;
+      background: var(--border-mid);
+      cursor: pointer;
+      transition: background 150ms;
+    }
+    .carousel-dot.active { background: var(--accent); }
+    .carousel-caption {
+      font-size: 11px;
+      color: var(--ink-ghost);
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    /* ─── QUOTE ──────────────────────────────────────────────── */
+    .cs-quote {
+      background: var(--accent-light);
+      border-left: 2px solid var(--accent);
+      padding: 24px 28px;
+      margin: 28px 0;
+    }
+    .cs-quote p {
+      font-size: 17px;
+      line-height: 1.55;
+      color: var(--ink);
+      margin-bottom: 0;
+    }
+    .cs-quote p + cite { margin-top: 12px; display: block; }
+    .cs-quote cite {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent-text);
+      font-style: normal;
+    }
+
+    /* ─── LIGHTBOX ───────────────────────────────────────────── */
+    .cs-image img,
+    .cs-image-pair img,
+    .carousel-slide img {
+      cursor: zoom-in;
+    }
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(26, 25, 22, 0.92);
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.4);
+    }
+    .lightbox-close {
+      position: fixed;
+      top: 20px;
+      right: 24px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: 0.5px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.7);
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 0;
+      transition: color 120ms, border-color 120ms;
+      line-height: 1;
+    }
+    .lightbox-close:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+
+    /* ─── NEXT PROJECT ───────────────────────────────────────── */
+    .next-project {
+      border-top: 0.5px solid var(--border);
+      margin-top: 64px;
+    }
+    .next-project-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+    .next-label {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-ghost);
+      padding: 20px 0 0;
+    }
+    .next-card {
+      display: grid;
+      grid-template-columns: 52px 1fr auto;
+      align-items: center;
+      gap: 20px;
+      padding: 20px 0 28px;
+      text-decoration: none;
+      color: var(--ink);
+      transition: background 120ms;
+    }
+    .next-card:hover { background: var(--bg-warm); margin: 0 -48px; padding-left: 48px; padding-right: 48px; }
+    .next-thumb {
+      width: 52px; height: 52px;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 0.5px solid var(--border);
+    }
+    .next-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .next-title {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: -0.3px;
+      margin-bottom: 2px;
+    }
+    .next-subtitle { font-size: 12px; color: var(--ink-soft); }
+    .next-arrow {
+      font-size: 18px;
+      color: var(--border-mid);
+      transition: color 150ms, transform 150ms;
+    }
+    .next-card:hover .next-arrow { color: var(--ink); transform: translateX(3px); }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      border-top: 0.5px solid var(--border);
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-left, .footer-right { font-size: 12px; color: var(--ink-ghost); }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      .cs-header { padding: 32px 24px 0; }
+      .cs-title { font-size: 32px; }
+      .cs-meta { grid-template-columns: repeat(2, 1fr); }
+      .cs-body { padding: 0 24px; grid-template-columns: 1fr; }
+      .cs-sidebar { display: none; }
+      .cs-content { padding: 32px 0 64px; border-left: none; }
+      .next-project-inner { padding: 0 24px; }
+      footer { padding: 20px 24px; }
+    }
+
+    @media (max-width: 480px) {
+      nav { padding: 0 16px; }
+      .nav-right .nav-all-work { display: none; }
+      .nav-hamburger { display: flex; }
+      .cs-header { padding: 24px 16px 0; }
+      .cs-title { font-size: 26px; letter-spacing: -1px; }
+      .cs-meta { grid-template-columns: repeat(2, 1fr); }
+      .cs-body { padding: 0 16px; }
+      .cs-content { padding: 24px 0 48px; }
+      .cs-image-pair { grid-template-columns: 1fr; }
+      .next-project-inner { padding: 0 16px; }
+      footer { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAV ──────────────────────────────────────────────── -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <span class="dot"></span>
+      <span>Sharon S Kong</span>
+    </a>
+    <div class="nav-right">
+      <a href="index.html#work" class="nav-all-work">← All work</a>
+      <a href="#next-project" class="nav-next">Next project →</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="nav-drawer" id="nav-drawer">
+    <a href="index.html">Home</a>
+    <a href="index.html#work">All work</a>
+    <a href="about.html">About</a>
+    <a href="https://drive.google.com/file/d/1dvqH6lYQ_7dv0gXbxHfcCXoRDAYuYDX6/view?usp=sharing" target="_blank">Resume</a>
+  </div>
+
+  <!-- ─── HEADER ───────────────────────────────────────────── -->
+  <div class="cs-header">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Magnetic Design System</span>
+    </div>
+
+    <h1 class="cs-title">Design systems: creating <span style="color: var(--accent);">order</span> out of chaos</h1>
+    <p class="cs-subtitle">Bringing order, consistency, and a bold new visual language to one of enterprise networking's most widely used products.</p>
+
+    <div class="cs-meta">
+      <div class="cs-meta-item">
+        <div class="cs-meta-label">Role</div>
+        <div class="cs-meta-value">Lead Designer</div>
+      </div>
+      <div class="cs-meta-item">
+        <div class="cs-meta-label">Company</div>
+        <div class="cs-meta-value">Cisco Meraki</div>
+      </div>
+      <div class="cs-meta-item">
+        <div class="cs-meta-label">Project</div>
+        <div class="cs-meta-value">Design Systems</div>
+      </div>
+      <div class="cs-meta-item">
+        <div class="cs-meta-label">Year</div>
+        <div class="cs-meta-value">2020–2022</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── BODY ─────────────────────────────────────────────── -->
+  <div class="cs-body">
+
+    <!-- Sidebar -->
+    <aside class="cs-sidebar">
+      <div class="sidebar-label">Contents</div>
+      <nav class="sidebar-nav">
+        <a href="#section-problem" class="sidebar-item active" data-section="problem">
+          <span class="sidebar-num">01</span>
+          <span class="sidebar-text">Problem</span>
+        </a>
+        <a href="#section-process" class="sidebar-item" data-section="process">
+          <span class="sidebar-num">02</span>
+          <span class="sidebar-text">Process</span>
+        </a>
+        <a href="#section-outcomes" class="sidebar-item" data-section="outcomes">
+          <span class="sidebar-num">03</span>
+          <span class="sidebar-text">Outcomes</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Content -->
+    <main class="cs-content">
+
+      <!-- ── PROBLEM ─────────────────────────────── -->
+      <div id="section-problem">
+
+        <div class="section-divider">
+          <span class="section-divider-label">Problem</span>
+          <hr />
+        </div>
+
+        <div class="section-eyebrow">So it begins</div>
+        <h2 class="section-title">The Cisco Meraki Dashboard is the center for thousands of enterprise networks worldwide.</h2>
+
+        <p class="body-copy">Customers like Applebee's, Starbucks, and IHG Hotels — parent company of Holiday Inn and dozens of other brands — rely on it daily to manage their network infrastructure. At that scale, consistency isn't just a design preference. It's a business requirement.</p>
+        <p class="body-copy">And yet, for years, the Dashboard had none.</p>
+
+        <div class="cs-image">
+          <img src="images/magds-problem.png" alt="Dashboard problem — fragmented visual language" />
+        </div>
+
+        <p class="body-copy">There was no central design system. No shared component library. Designers worked from personal files and tribal knowledge. Engineers made judgment calls on spacing, color, and typography independently, often diverging from one another. The codebase had accumulated more than 70 unique shades of gray and over 30 distinct blues, mostly hardcoded, and sometimes in-line. Every team was effectively building in isolation, and it showed.</p>
+
+        <h2 class="section-title">More than 70 unique grays. More than 30 unique blues. Hardcoded.</h2>
+
+        <p class="body-copy">The product's visual language hadn't meaningfully evolved since the early 2000s. For existing customers, that stasis had become a comfort. They'd built workflows around an unchanging interface and resisted updates that disrupted their habits. But for new customers evaluating enterprise tools, the dated look was starting to cost deals. And internally, the lack of shared standards made onboarding slow, collaboration harder than it needed to be, and new feature development unnecessarily constrained by the limitations of an ad-hoc component inventory.</p>
+
+        <div class="cs-carousel">
+          <div class="carousel-frame">
+            <div class="carousel-track">
+              <div class="carousel-slide">
+                <img src="images/magds-before-devicelist.png" alt="Before — Device list page" />
+              </div>
+              <div class="carousel-slide">
+                <img src="images/magds-before-insight-licensing.png" alt="Before — Insight and licensing page" />
+              </div>
+            </div>
+            <button class="carousel-arrow prev disabled" aria-label="Previous">←</button>
+            <button class="carousel-arrow next" aria-label="Next">→</button>
+          </div>
+          <div class="carousel-dots">
+            <div class="carousel-dot active" data-index="0"></div>
+            <div class="carousel-dot" data-index="1"></div>
+          </div>
+          <div class="carousel-caption">Before — pre-redesign Dashboard pages</div>
+        </div>
+
+        <p class="body-copy">The problem was clear. What it needed was a champion.</p>
+
+      </div>
+
+      <!-- ── PROCESS ────────────────────────────── -->
+      <div id="section-process">
+
+        <div class="section-divider">
+          <span class="section-divider-label">Process</span>
+          <hr />
+        </div>
+
+        <div class="section-eyebrow">The backstory</div>
+        <h2 class="section-title">Before a single component could be designed, the project had to be sold.</h2>
+        <p class="body-copy">As a senior designer who had once been the interim UX Design Team Lead, my first task wasn't design work — it was organizational work. I needed to build a case compelling enough to secure leadership buy-in and critical resource commitments from teams across the organization who would eventually need to refactor their portion of the Dashboard using the new system. These were teams with their own roadmaps, their own pressures, and their own reasons to be skeptical of a multi-year dependency.</p>
+
+        <div class="cs-image">
+          <img src="images/magds-timeline.png" alt="Project timeline" />
+        </div>
+
+        <p class="body-copy">That meant clearly defining the problem, identifying what success would look like, and projecting realistic timelines. Once leads across the organization were aligned on the vision and prepared to commit resources, we could begin work in earnest.</p>
+
+        <div class="cs-image">
+          <img src="images/magds-staffing.png" alt="Team staffing plan" />
+        </div>
+
+        <p class="body-copy">Part of that resourcing was hiring: remote front-end engineers, a UX writer, and a design agency (<a href="https://designmap.com/" target="_blank">DesignMap</a>) to partner with us and provide additional design capacity when our internal designers needed to focus on product-specific work. For the design system work, I managed the DesignMap relationship directly, working with a team of three agency designers and part-time internal designers for much of the project.</p>
+
+        <div class="section-eyebrow">Defining the Vision</div>
+        <h2 class="section-title">With the team in place, we turned to the question of what the new Dashboard should actually <em>feel</em> like.</h2>
+        <p class="body-copy">The product design team aligned early with the marketing design team, who were simultaneously rolling out a brand refresh across Meraki. We established three core design principles that would guide every decision: <strong>Simplified, Trusted, and Empowered.</strong></p>
+
+        <div class="cs-image">
+          <img src="images/magds-principles.png" alt="Three core design principles: Simplified, Trusted, Empowered" />
+        </div>
+
+        <p class="body-copy">The team generated multiple iterations of key Dashboard screens and tested them with end customers to gauge which directions communicated the brand most effectively.</p>
+
+        <div class="cs-image">
+          <img src="images/magds-visualexploration.png" alt="Visual direction explorations" />
+        </div>
+
+        <p class="body-copy">We ran regular surveys with internal stakeholders with every round of design to keep feedback flowing from all directions. That research converged into a style tile and a set of aspirational core designs — a north star the team could build toward.</p>
+
+        <div class="cs-carousel">
+          <div class="carousel-frame">
+            <div class="carousel-track">
+              <div class="carousel-slide">
+                <img src="images/magds-mode-light.png" alt="Light mode — aspirational design" style="max-width: 70%;" />
+              </div>
+              <div class="carousel-slide">
+                <img src="images/magds-mode-dark.png" alt="Dark mode — aspirational design" style="max-width: 70%;" />
+              </div>
+              <div class="carousel-slide">
+                <img src="images/magds-styletile.png" alt="Style tile — direction and mood" />
+              </div>
+            </div>
+            <button class="carousel-arrow prev disabled" aria-label="Previous">←</button>
+            <button class="carousel-arrow next" aria-label="Next">→</button>
+          </div>
+          <div class="carousel-dots">
+            <div class="carousel-dot active" data-index="0"></div>
+            <div class="carousel-dot" data-index="1"></div>
+            <div class="carousel-dot" data-index="2"></div>
+          </div>
+          <div class="carousel-caption">Style tile and light / dark mode explorations</div>
+        </div>
+
+        <div class="section-eyebrow">The great audit</div>
+        <p class="body-copy">The design and engineering teams got to work on the ground truth: an audit of pages and components in Dashboard. Each page was assessed for complexity and assigned a timeline for migration to the new system.</p>
+
+        <div class="cs-image">
+          <img src="images/magds-prioritization.png" alt="Page prioritization matrix" />
+        </div>
+
+        <p class="body-copy">From that inventory, engineering, product design, and product management collaborated to build a prioritized roadmap — identifying low-effort, high-impact pages for early wins that would build momentum, while also flagging high-effort, high-impact pages that needed to start early given their complexity.</p>
+
+        <h2 class="section-title">The engineering work was critical because it meant that the Dashboard didn't just <em>look</em> more modern — it would actually load quicker and feel smoother.</h2>
+
+        <p class="body-copy">The component index followed the same logic. Design and engineering worked together to catalog existing components and map them to common page templates: overview pages, list pages, form pages, and so on. That index became the backbone of the component library roadmap.</p>
+
+        <div class="cs-image">
+          <img src="images/magds-index.png" alt="Component index — master list of all components and status" />
+        </div>
+
+        <div class="section-eyebrow">Atoms First</div>
+        <p class="body-copy">We built from the ground up — atoms before molecules, foundations before features. Color tokens, spacing values, typography scales. We knew some of these foundational decisions would need revisiting as we encountered edge cases and accessibility requirements, and they did. The color system in particular evolved as we pushed for accessibility compliance across different chart types. (In hindsight, it ended up more muted than I'd have liked while trying to accommodate various types of color-blindedness — there's room to make it bolder in the future.)</p>
+        <p class="body-copy">The approach was deliberately conservative. We weren't reimagining components or changing their behavior. We were translating them — taking what existed and making it consistent, standards-compliant, and extensible. When we encountered one-off edge cases, we made a deliberate call: either build a bespoke solution, or require that feature to use existing components. That discipline kept the library manageable.</p>
+
+        <div class="cs-image-pair">
+          <img src="images/magds-status-client.png" alt="Status component — client view" />
+          <img src="images/magds-status-device.png" alt="Status component — device view" />
+        </div>
+
+        <h2 class="section-title">It was a massive exercise in organization and categorization. There was no part of Dashboard left untouched, no stone unturned.</h2>
+
+        <div class="section-eyebrow">Sandbox Sessions</div>
+        <p class="body-copy">One of the practices that worked really well was something we called <strong>Sandbox sessions</strong> — open working sessions where members of the broader Meraki design team could come in and try rebuilding their own screens using the new Figma component library.</p>
+
+        <div class="cs-image">
+          <img src="images/magds-sandbox.png" alt="Sandbox session — designers working with the new component library" />
+        </div>
+
+        <p class="body-copy">It served two purposes simultaneously: designers learned the component and variant system in low-stakes, hands-on batches, and their feedback directly shaped how we structured and documented the library. It turned adoption into a collaboration rather than a mandate, and we got valuable feedback on how components were working for our users — the designers themselves.</p>
+
+        <div class="cs-image">
+          <img src="images/magds-sandbox-review.png" alt="Sandbox session review" />
+        </div>
+
+        <div class="section-eyebrow">Governance and Growth</div>
+        <h2 class="section-title">A design system without governance is just a snapshot. It becomes outdated the moment it ships.</h2>
+        <p class="body-copy">To give the system longevity, we built a tiered governance model that balanced standardization with the reality that product teams would always need to innovate.</p>
+
+        <div class="cs-image">
+          <img src="images/magds-governance.png" alt="Governance model" />
+        </div>
+
+        <p class="body-copy">Designers could propose new components, make a case for how broadly applicable they'd be, and with the design system team's review and sometimes active collaboration, get them added to the library. It was designed to reduce unchecked one-offs while keeping the system responsive to real product needs.</p>
+
+        <h2 class="section-title">We built something meant to grow.</h2>
+
+        <div class="section-eyebrow">Launch</div>
+        <p class="body-copy">Once we had foundations, globals, and the core components ready, we launched the new system internally.</p>
+        <h2 class="section-title">We called it Magnetic.</h2>
+
+        <div class="cs-image">
+          <img src="images/magds-meetmagnetic.png" alt="Meet Magnetic — the new design system" />
+        </div>
+
+        <p class="body-copy">When a page had been refactored and rewritten using the new library, it was <strong>magnetized</strong>. It sounds like a small thing, but shared language made the work feel like a movement rather than a chore. We even had a little horseshoe magnet as the project mascot.</p>
+        <p class="body-copy">To help the broader organization navigate the transition, we created a decision tree and supporting documentation for development teams — a practical guide to where the new library applied, when to use it, and how to raise edge cases.</p>
+
+        <div class="cs-image">
+          <img src="images/magds-decisiontree.png" alt="Decision tree for development teams" />
+        </div>
+
+        <p class="body-copy">The pilot rollout was carefully staged. We started subtly with a font update that got an opinionated post on the subreddit r/meraki. Then we updated the main navigation, a huge visual shift, followed by a curated mix of high-impact top-level pages. Select users could opt into the beta voluntarily, and many did. Their feedback fed directly back to our team in near real-time.</p>
+
+        <div class="cs-image">
+          <img src="images/magds-pilotfeedback.png" alt="Pilot feedback and rollout monitoring" />
+        </div>
+
+        <p class="body-copy">Every change was coordinated with support teams, monitored closely by our PMs, and communicated proactively. We learned quickly that the sequencing and communication mattered as much as the design itself. Disgruntled opinions surfaced and we separated opinion-based feedback ("I don't care for the new colors") from more critical issues ("I can't find X content when I'm in beta mode.").</p>
+        <p class="body-copy">It was a useful reminder that for customers who live in the Dashboard every day, change itself carries a cost — regardless of whether the end result is better. That tension shaped how we approached the rollout.</p>
+        <h2 class="section-title">Take a look at some before and after screens.</h2>
+
+        <div class="cs-carousel">
+          <div class="carousel-frame">
+            <div class="carousel-track">
+              <div class="carousel-slide">
+                <img src="images/magds-beforeafter.png" alt="Before and after — overview" />
+              </div>
+              <div class="carousel-slide">
+                <img src="images/magds-beforeafter-1.png" alt="Before and after — page 1" />
+              </div>
+              <div class="carousel-slide">
+                <img src="images/magds-beforeafter-2.png" alt="Before and after — page 2" />
+              </div>
+              <div class="carousel-slide">
+                <img src="images/magds-beforeafter-3.png" alt="Before and after — page 3" />
+              </div>
+            </div>
+            <button class="carousel-arrow prev disabled" aria-label="Previous">←</button>
+            <button class="carousel-arrow next" aria-label="Next">→</button>
+          </div>
+          <div class="carousel-dots">
+            <div class="carousel-dot active" data-index="0"></div>
+            <div class="carousel-dot" data-index="1"></div>
+            <div class="carousel-dot" data-index="2"></div>
+            <div class="carousel-dot" data-index="3"></div>
+          </div>
+          <div class="carousel-caption">Before and after — refactored Dashboard pages</div>
+        </div>
+
+      </div>
+
+      <!-- ── OUTCOMES ──────────────────────────── -->
+      <div id="section-outcomes">
+
+        <div class="section-divider">
+          <span class="section-divider-label">Outcome</span>
+          <hr />
+        </div>
+
+        <p class="body-copy">The reaction across the organization was mixed in a good way. Engineers and designers were genuinely excited about working with a clean, consistent library. There was also some grumbling about the scope of refactoring required to migrate existing pages. Technical debt doesn't disappear when a design system ships; it just becomes more visible.</p>
+        <h2 class="section-title">But the structural benefits were immediate and lasting.</h2>
+        <p class="body-copy">Onboarding new designers and engineers became meaningfully faster. The shared language of the system reduced friction in design-to-engineering handoff. Teams that once debated which shade of blue to use could spend that time building.</p>
+
+        <div class="cs-image">
+          <img src="images/magds-grayscale.png" alt="Unified color palette" style="max-width: 60%;" />
+        </div>
+
+        <h2 class="section-title">We went from more than 70 unique grays and 30+ unique blues to a single, defined palette.</h2>
+
+        <div class="section-eyebrow">Beyond Meraki</div>
+        <p class="body-copy">Word traveled. Other teams inside Cisco started asking if they could use Magnetic — not just the component library, but the design language itself. What had started as a Meraki initiative became the seed of a much larger cross-functional effort, eventually touching multiple Cisco product lines and recent acquisitions.</p>
+        <h2 class="section-title">I was asked to lead workshops to help reimagine Cisco's other entities using Magnetic's design language, and we started calling it the Platform Suite.</h2>
+
+        <div class="cs-carousel">
+          <div class="carousel-frame">
+            <div class="carousel-track">
+              <div class="carousel-slide">
+                <img src="images/magds-nexusafter.jpg" alt="Nexus — after Magnetic applied" />
+              </div>
+              <div class="carousel-slide">
+                <img src="images/magds-nexusbefore.jpg" alt="Nexus — before Magnetic" />
+              </div>
+            </div>
+            <button class="carousel-arrow prev disabled" aria-label="Previous">←</button>
+            <button class="carousel-arrow next" aria-label="Next">→</button>
+          </div>
+          <div class="carousel-dots">
+            <div class="carousel-dot active" data-index="0"></div>
+            <div class="carousel-dot" data-index="1"></div>
+          </div>
+          <div class="carousel-caption">Nexus — after and before Magnetic</div>
+        </div>
+
+        <h2 class="section-title">Today, at least five distinct business units at Cisco use Magnetic's core design system and component library.</h2>
+        <p class="body-copy">But that's a whole other case study.</p>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ─── NEXT PROJECT ──────────────────────────────────────── -->
+  <div class="next-project" id="next-project">
+    <div class="next-project-inner">
+      <div class="next-label">Next project</div>
+      <a href="matterhaul.html" class="next-card">
+        <div class="next-thumb">
+          <img src="images/mh-favicon.svg" alt="Matterhaul Quote Builder" />
+        </div>
+        <div class="next-info">
+          <div class="next-title">AI-driven quote builder for the built world</div>
+          <div class="next-subtitle">Designing the human layer of an AI-powered platform for the distribution industry</div>
+        </div>
+        <span class="next-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ─── FOOTER ────────────────────────────────────────────── -->
+  <footer>
+    <span class="footer-left">© 2026 Sharon S Kong</span>
+    <span class="footer-right">San Francisco, CA</span>
+  </footer>
+
+  <script>
+    // ── Lightbox ───────────────────────────────────────────────
+    (function() {
+      var lb = document.createElement('div');
+      lb.className = 'lightbox';
+      lb.innerHTML = '<button class="lightbox-close" aria-label="Close">✕</button><img />';
+      document.body.appendChild(lb);
+
+      var lbImg = lb.querySelector('img');
+
+      function open(src, alt) {
+        lbImg.src = src;
+        lbImg.alt = alt || '';
+        lb.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function close() {
+        lb.classList.remove('open');
+        document.body.style.overflow = '';
+        lbImg.src = '';
+      }
+
+      document.querySelectorAll('.cs-image img, .cs-image-pair img, .carousel-slide img').forEach(function(img) {
+        img.addEventListener('click', function(e) {
+          e.stopPropagation();
+          open(img.src, img.alt);
+        });
+      });
+
+      lb.querySelector('.lightbox-close').addEventListener('click', close);
+      lb.addEventListener('click', function(e) { if (e.target === lb) close(); });
+      document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close(); });
+    })();
+
+    // ── Hamburger ──────────────────────────────────────────────
+    (function() {
+      var btn = document.getElementById('hamburger');
+      var drawer = document.getElementById('nav-drawer');
+      if (!btn) return;
+      btn.addEventListener('click', function() {
+        var open = drawer.classList.toggle('open');
+        btn.classList.toggle('open', open);
+        btn.setAttribute('aria-expanded', open);
+      });
+      drawer.querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', function() {
+          drawer.classList.remove('open');
+          btn.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        });
+      });
+    })();
+
+    // ── Carousels (generic, handles multiple instances) ────────
+    document.querySelectorAll('.cs-carousel').forEach(function(carousel) {
+      var track   = carousel.querySelector('.carousel-track');
+      var dots    = carousel.querySelectorAll('.carousel-dot');
+      var prevBtn = carousel.querySelector('.carousel-arrow.prev');
+      var nextBtn = carousel.querySelector('.carousel-arrow.next');
+      var caption = carousel.querySelector('.carousel-caption');
+      var total   = dots.length;
+      var current = 0;
+
+      var captions = Array.from(dots).map(function(d, i) {
+        var slide = track.querySelectorAll('.carousel-slide')[i];
+        return slide ? (slide.querySelector('img') || {}).alt || '' : '';
+      });
+
+      function goTo(idx) {
+        current = idx;
+        track.style.transform = 'translateX(-' + (100 * current) + '%)';
+        dots.forEach(function(d, i) { d.classList.toggle('active', i === current); });
+        prevBtn.classList.toggle('disabled', current === 0);
+        nextBtn.classList.toggle('disabled', current === total - 1);
+        if (caption) caption.textContent = captions[current] || '';
+      }
+
+      prevBtn.addEventListener('click', function() { if (current > 0) goTo(current - 1); });
+      nextBtn.addEventListener('click', function() { if (current < total - 1) goTo(current + 1); });
+      dots.forEach(function(d) {
+        d.addEventListener('click', function() { goTo(parseInt(d.dataset.index)); });
+      });
+
+      goTo(0);
+    });
+
+    // ── Sidebar scrollspy ──────────────────────────────────────
+    (function() {
+      var items = document.querySelectorAll('.sidebar-item');
+      function onScroll() {
+        var scrollY = window.scrollY + 120;
+        var active = null;
+        ['problem', 'process', 'outcomes'].forEach(function(id) {
+          var el = document.getElementById('section-' + id);
+          if (el && el.offsetTop <= scrollY) active = id;
+        });
+        items.forEach(function(item) {
+          item.classList.toggle('active', item.dataset.section === active);
+        });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+
+</body>
+</html>

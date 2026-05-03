@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sharon S Kong — UX & Product Designer</title>
+  <meta name="description" content="Portfolio of Sharon, a UX and product designer specializing in systems, strategy, and people." />
+  <link rel="icon" type="image/png" href="images/sskportfolio-favicon.png" />
+  <meta property="og:title" content="Sharon S Kong — UX & Product Designer" />
+  <meta property="og:description" content="Portfolio of Sharon, a UX and product designer specializing in systems, strategy, and people." />
+  <meta property="og:image" content="images/og-img.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --ink:         #1A1916;
+      --ink-mid:     #6B6860;
+      --ink-soft:    #9A9790;
+      --ink-ghost:   #9a9790;
+      --bg:          #FAFAF8;
+      --bg-warm:     #F5F3EE;
+      --bg-card:     #FFFFFF;
+      --border:      #E6E3DD;
+      --border-mid:  #D4D0C9;
+      --accent:      #F1625C;
+      --accent-light:#FDF0EF;
+      --accent-text: #A82E29;
+    }
+
+    /* ─── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; width: 100%; }
+
+    /* ─── NAV ────────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border);
+    }
+    .nav-logo {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-logo .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--ink-mid);
+      transition: color 120ms ease;
+    }
+    .nav-links a:hover { color: var(--ink); }
+
+    /* ─── LAYOUT HELPERS ─────────────────────────────────────── */
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+
+    .eyebrow {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 48px;
+    }
+    .section-header .eyebrow { white-space: nowrap; }
+    .section-header hr {
+      flex: 1;
+      border: none;
+      border-top: 0.5px solid var(--border);
+    }
+
+    /* ─── HERO ───────────────────────────────────────────────── */
+    #hero {
+      padding: 80px 0 96px;
+      border-bottom: 0.5px solid var(--border);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 64px;
+      align-items: start;
+    }
+    .availability-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 0.5px solid #B8E0C0;
+      background: #F0FAF2;
+      font-size: 12px;
+      color: #2D7A46;
+      margin-bottom: 32px;
+    }
+    .availability-pill .green-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #3AB85E;
+      flex-shrink: 0;
+    }
+    .hero-name {
+      font-size: 52px;
+      font-weight: 500;
+      letter-spacing: -2.8px;
+      line-height: 1.05;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+    .hero-rule {
+      width: 40px;
+      height: 2px;
+      background: var(--accent);
+      margin-bottom: 20px;
+    }
+    .hero-tagline {
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--ink-mid);
+      max-width: 440px;
+      margin-bottom: 40px;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .btn-primary {
+      display: inline-block;
+      padding: 11px 24px;
+      background: var(--ink);
+      color: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: -0.1px;
+      border: none;
+      border-radius: 0;
+      cursor: pointer;
+      transition: background 120ms ease;
+    }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:hover { background: #2d2c28; }
+    .hero-email {
+      font-size: 13px;
+      color: var(--ink-mid);
+      border-bottom: 0.5px solid var(--border-mid);
+      padding-bottom: 1px;
+      transition: color 120ms ease, border-color 120ms ease;
+    }
+    .hero-email:hover { color: var(--ink); border-color: var(--ink); }
+
+    /* Hero right: meta stack */
+    .hero-meta {
+      padding-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      min-width: 200px;
+    }
+    .meta-item {}
+    .meta-label {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-ghost);
+      margin-bottom: 3px;
+    }
+    .meta-value {
+      font-size: 13px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .meta-value a {
+      color: var(--ink);
+      border-bottom: 0.5px solid var(--border-mid);
+      padding-bottom: 1px;
+      transition: color 120ms, border-color 120ms;
+    }
+    .meta-value a:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ─── CASE STUDIES ───────────────────────────────────────── */
+    #work {
+      padding: 80px 0 96px;
+      border-bottom: 0.5px solid var(--border);
+    }
+    .case-studies {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .case-card {
+      border: 0.5px solid var(--border);
+      border-radius: 0;
+      background: var(--bg-card);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 150ms ease, border-color 150ms ease;
+      margin-bottom: 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .case-card:last-child { margin-bottom: 0; }
+    .case-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-mid);
+    }
+    .case-card-image {
+      background: var(--bg-warm);
+      overflow: hidden;
+      position: relative;
+      min-height: 300px;
+    }
+    .case-card-image img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .stripe-bg {
+      width: 100%;
+      height: 100%;
+      background-image: repeating-linear-gradient(
+        -45deg,
+        var(--bg-warm) 0px,
+        var(--bg-warm) 6px,
+        var(--border) 6px,
+        var(--border) 7px
+      );
+    }
+    .img-placeholder-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    .img-placeholder-label {
+      font-family: 'Courier New', monospace;
+      font-size: 10px;
+      letter-spacing: 0.5px;
+      color: var(--ink-ghost);
+      text-align: center;
+    }
+    .case-card-body {
+      padding: 28px 32px 32px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 32px;
+    }
+    .case-card-left { flex: 1; }
+    .case-year {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .case-title {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 30px;
+      line-height: 1.25;
+      letter-spacing: -0.8px;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .case-subtitle {
+      font-size: 13px;
+      color: var(--ink-mid);
+      line-height: 1.6;
+      max-width: 560px;
+      margin-bottom: 20px;
+    }
+    .case-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 0.5px solid var(--border);
+      font-size: 11px;
+      color: var(--ink-mid);
+      background: transparent;
+    }
+    .case-card-right {
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 4px;
+      flex-shrink: 0;
+    }
+    .case-arrow {
+      font-size: 18px;
+      color: var(--border-mid);
+      transition: color 150ms ease, transform 150ms ease;
+    }
+    .case-card:hover .case-arrow {
+      color: var(--ink);
+      transform: translate(2px, -2px);
+    }
+
+    /* ─── ABOUT ──────────────────────────────────────────────── */
+    #about {
+      padding: 80px 0 96px;
+      border-bottom: 0.5px solid var(--border);
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+    .about-left h3 {
+      font-size: 26px;
+      font-weight: 500;
+      letter-spacing: -0.6px;
+      line-height: 1.3;
+      margin-bottom: 20px;
+      margin-top: 16px;
+    }
+    .about-left p {
+      font-size: 14px;
+      color: var(--ink-mid);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .about-left p:last-child { margin-bottom: 0; }
+    .about-right {
+      background: var(--bg-warm);
+      padding: 36px;
+    }
+    .sk-monogram {
+      width: 72px;
+      height: 72px;
+      background: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .sk-monogram span {
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--bg);
+      letter-spacing: -1px;
+    }
+    .sk-name {
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: -0.3px;
+      margin-bottom: 2px;
+    }
+    .sk-title {
+      font-size: 12px;
+      color: var(--ink-soft);
+      margin-bottom: 32px;
+    }
+    .facts-table {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .fact-row {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 16px;
+      padding: 12px 0;
+      border-top: 0.5px solid var(--border);
+    }
+    .fact-row:last-child { border-bottom: 0.5px solid var(--border); }
+    .fact-label {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-ghost);
+      padding-top: 2px;
+    }
+    .fact-value {
+      font-size: 12px;
+      color: var(--ink);
+      line-height: 1.7;
+    }
+
+    /* ─── CONTACT ────────────────────────────────────────────── */
+    #contact {
+      padding: 80px 0 96px;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+    .contact-left .contact-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 16px;
+    }
+    .contact-subtext {
+      font-size: 13px;
+      color: var(--ink-soft);
+      line-height: 1.6;
+    }
+    .contact-right {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-top: 44px;
+    }
+    .contact-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-radius: 999px;
+      border: 0.5px solid var(--border);
+      font-size: 13px;
+      color: var(--ink);
+      background: transparent;
+      transition: border-color 120ms, background 120ms;
+      gap: 12px;
+    }
+    .contact-pill:hover {
+      border-color: var(--border-mid);
+      background: var(--bg-warm);
+    }
+    .contact-pill .pill-label { font-weight: 500; }
+    .contact-pill .pill-url { font-size: 11px; color: var(--ink-soft); }
+    .contact-pill .pill-arrow { color: var(--ink-soft); font-size: 14px; }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      border-top: 0.5px solid var(--border);
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-left {
+      font-size: 12px;
+      color: var(--ink-ghost);
+    }
+    .footer-right {
+      font-size: 12px;
+      color: var(--ink-ghost);
+    }
+
+    /* ─── HAMBURGER ──────────────────────────────────────────── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block;
+      height: 1px;
+      width: 100%;
+      background: var(--ink);
+      transition: transform 200ms ease, opacity 200ms ease;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    .nav-drawer {
+      display: none;
+      position: fixed;
+      top: 56px;
+      left: 0;
+      right: 0;
+      background: var(--bg);
+      border-bottom: 0.5px solid var(--border);
+      padding: 8px 0 16px;
+      z-index: 99;
+      flex-direction: column;
+    }
+    .nav-drawer.open { display: flex; }
+    .nav-drawer a {
+      font-size: 15px;
+      color: var(--ink-mid);
+      padding: 12px 24px;
+      transition: color 120ms;
+    }
+    .nav-drawer a:hover { color: var(--ink); }
+
+    /* ─── RESPONSIVE: 768px ──────────────────────────────────── */
+    @media (max-width: 768px) {
+      .container { padding: 0 24px; }
+      nav { padding: 0 24px; }
+      footer { padding: 20px 24px; }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .hero-name { font-size: 40px; letter-spacing: -2px; }
+      .hero-tagline { font-size: 15px; max-width: 100%; }
+
+      .hero-meta {
+        flex-direction: row;
+        gap: 0;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 4px;
+        min-width: unset;
+      }
+      .hero-meta::-webkit-scrollbar { display: none; }
+      .meta-item {
+        flex-shrink: 0;
+        padding-right: 28px;
+        border-right: 0.5px solid var(--border);
+        margin-right: 28px;
+      }
+      .meta-item:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+      .contact-right { padding-top: 0; }
+
+      #hero  { padding: 56px 0 64px; }
+      #work  { padding: 56px 0 64px; }
+      #about { padding: 56px 0 64px; }
+      #contact { padding: 56px 0 64px; }
+
+      .case-card { grid-template-columns: 1fr; }
+      .case-card-image { aspect-ratio: 16 / 9; min-height: 0; }
+      .case-card-body { padding: 20px 20px 24px; }
+    }
+
+    /* ─── RESPONSIVE: 480px ──────────────────────────────────── */
+    @media (max-width: 480px) {
+      .container { padding: 0 16px; }
+      nav { padding: 0 16px; }
+      footer { padding: 16px; }
+
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+
+      .hero-name { font-size: 32px; letter-spacing: -1.6px; }
+      .hero-tagline { font-size: 14px; }
+      #hero  { padding: 40px 0 48px; }
+      #work  { padding: 40px 0 48px; }
+      #about { padding: 40px 0 48px; }
+      #contact { padding: 40px 0 48px; }
+
+      .case-card { width: 100%; }
+      .case-card-body { padding: 16px 16px 20px; gap: 16px; }
+      .case-title { font-size: 18px; }
+      .case-subtitle { font-size: 12px; }
+
+      .about-right { padding: 24px; }
+      .contact-email { font-size: 20px; }
+      .section-header { margin-bottom: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAV ──────────────────────────────────────────────── -->
+  <nav>
+    <div class="nav-logo">
+      <span class="dot"></span>
+      <span>Sharon S Kong</span>
+    </div>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="about.html">About</a>
+      <a href="https://drive.google.com/file/d/1dvqH6lYQ_7dv0gXbxHfcCXoRDAYuYDX6/view?usp=sharing" target="_blank">Resume</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <div class="nav-drawer" id="nav-drawer">
+    <a href="#work" class="drawer-link">Work</a>
+    <a href="about.html" class="drawer-link">About</a>
+    <a href="https://drive.google.com/file/d/1dvqH6lYQ_7dv0gXbxHfcCXoRDAYuYDX6/view?usp=sharing" target="_blank" class="drawer-link">Resume</a>
+  </div>
+
+  <!-- ─── HERO ─────────────────────────────────────────────── -->
+  <section id="hero">
+    <div class="container">
+      <div class="hero-grid">
+
+        <div class="hero-left">
+          <div class="availability-pill">
+            <span class="green-dot"></span>
+            Available for new opportunities
+          </div>
+          <h1 class="hero-name">Sharon S Kong</h1>
+          <div class="hero-rule"></div>
+          <p class="hero-tagline">Product designer. Seoul-raised, SF-based, 10+ years building products.</p>
+          <div class="hero-actions">
+            <a href="#work" class="btn-primary">View work</a>
+          </div>
+        </div>
+
+        <div class="hero-meta">
+          <div class="meta-item">
+            <div class="meta-label">Currently</div>
+            <div class="meta-value">Freelance / Open</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Previously</div>
+            <div class="meta-value">UX Design Lead<br>Cisco Meraki</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Based in</div>
+            <div class="meta-value">San Francisco, CA</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CASE STUDIES ──────────────────────────────────────── -->
+  <section id="work">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Selected work</span>
+        <hr />
+      </div>
+      <div class="case-studies">
+
+        <article class="case-card" onclick="location.href='magds.html'" style="cursor:pointer;">
+          <div class="case-card-image">
+            <img src="images/magds-card.png" alt="Meraki Design Language System" />
+          </div>
+          <div class="case-card-body">
+            <div class="case-card-left">
+              <div class="case-year">2022</div>
+              <h2 class="case-title">Design systems: creating order out of chaos</h2>
+              <p class="case-subtitle">Founding the first unified design system at Cisco Meraki — token architecture, component library, and governance model adopted across 8 product teams and 30+ designers.</p>
+              <div class="case-tags">
+                <span class="tag">Design Systems</span>
+                <span class="tag">Leadership</span>
+                <span class="tag">Figma</span>
+                <span class="tag">Cisco Meraki</span>
+              </div>
+            </div>
+            <div class="case-card-right">
+              <span class="case-arrow">↗</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="case-card" onclick="location.href='matterhaul.html'" style="cursor:pointer;">
+          <div class="case-card-image">
+            <img src="images/mh-card.png" alt="Matterhaul AI-powered quote builder" />
+          </div>
+          <div class="case-card-body">
+            <div class="case-card-left">
+              <div class="case-year">2025</div>
+              <h2 class="case-title">AI-driven quote builder for the built world</h2>
+              <p class="case-subtitle">Designing the human layer of an AI-powered platform for the distribution industry — helping sales teams quote faster, train easier, and trust the system.</p>
+              <div class="case-tags">
+                <span class="tag">Product Design</span>
+                <span class="tag">User Research</span>
+                <span class="tag">AI / ML</span>
+                <span class="tag">Matterhaul</span>
+              </div>
+            </div>
+            <div class="case-card-right">
+              <span class="case-arrow">↗</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="case-card" onclick="location.href='mkigo.html'" style="cursor:pointer;">
+          <div class="case-card-image">
+            <img src="images/mkigo-card.png" alt="Simplifying networking for small businesses" />
+          </div>
+          <div class="case-card-body">
+            <div class="case-card-left">
+              <div class="case-year">2019</div>
+              <h2 class="case-title">Simplifying networking for small businesses</h2>
+              <p class="case-subtitle">Bringing enterprise-grade WiFi management to small business owners who just want it to work — a consumer product first for Cisco Meraki.</p>
+              <div class="case-tags">
+                <span class="tag">Product Design</span>
+                <span class="tag">User Research</span>
+                <span class="tag">iOS, Android</span>
+                <span class="tag">Cisco Meraki</span>
+              </div>
+            </div>
+            <div class="case-card-right">
+              <span class="case-arrow">↗</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ABOUT ─────────────────────────────────────────────── -->
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+
+        <div class="about-left">
+          <div class="eyebrow">About</div>
+          <h3>Crafting systemic solutions at the intersection of people, technology, and organizational complexity.</h3>
+          <p>With over a decade in product and experience design, I've led design across enterprise SaaS, service design, and complex systems — from zero-to-one products to multi-team design language programs. My practice sits at the intersection of research, systems thinking, and craft.</p>
+          <p>At Cisco Meraki I led a team of designers across the network management platform, helping shape the design culture and product direction for a suite used by IT teams at some of the world's largest organizations. Before that, I studied social design at MICA and communication design at Carnegie Mellon — both continue to influence how I think about who design is really for.</p>
+        </div>
+
+        <div class="about-right">
+          <div class="sk-monogram">
+            <span>SK</span>
+          </div>
+          <div class="sk-name">Sharon S Kong</div>
+          <div class="sk-title">Staff Product Designer</div>
+          <div class="facts-table">
+            <div class="fact-row">
+              <span class="fact-label">Education</span>
+              <span class="fact-value">MA Social Design, MICA<br>BFA Communication Design, CMU</span>
+            </div>
+            <div class="fact-row">
+              <span class="fact-label">Languages</span>
+              <span class="fact-value">English, Korean</span>
+            </div>
+            <div class="fact-row">
+              <span class="fact-label">Tools</span>
+              <span class="fact-value">Figma, Claude, Lovable,<br>Linear, Miro, Notion, Jira</span>
+            </div>
+            <div class="fact-row">
+              <span class="fact-label">Also into</span>
+              <span class="fact-value">Basket-weaving, tattooing, and free-diving</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CONTACT ───────────────────────────────────────────── -->
+  <section id="contact">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Get in touch</span>
+        <hr />
+      </div>
+      <div class="contact-grid">
+
+        <div class="contact-left">
+          <p class="contact-subtext">Open to full-time roles, consulting, and collaborations. Best for senior IC, staff, or design leadership positions in product, enterprise, or social impact contexts.</p>
+        </div>
+
+        <div class="contact-right">
+          <a href="https://www.linkedin.com/in/ssjkong/" target="_blank" class="contact-pill">
+            <span>
+              <span class="pill-label">LinkedIn</span><br>
+              <span class="pill-url">linkedin.com/in/ssjkong</span>
+            </span>
+            <span class="pill-arrow">↗</span>
+          </a>
+          <a href="https://drive.google.com/file/d/1dvqH6lYQ_7dv0gXbxHfcCXoRDAYuYDX6/view?usp=sharing" target="_blank" class="contact-pill">
+            <span>
+              <span class="pill-label">Resume</span><br>
+              <span class="pill-url">PDF download</span>
+            </span>
+            <span class="pill-arrow">↗</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ────────────────────────────────────────────── -->
+  <footer>
+    <span class="footer-left">© 2026 Sharon S Kong</span>
+    <span class="footer-right">San Francisco, CA</span>
+  </footer>
+
+  <script>
+    (function() {
+      var btn = document.getElementById('hamburger');
+      var drawer = document.getElementById('nav-drawer');
+      btn.addEventListener('click', function() {
+        var open = drawer.classList.toggle('open');
+        btn.classList.toggle('open', open);
+        btn.setAttribute('aria-expanded', open);
+      });
+      drawer.querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', function() {
+          drawer.classList.remove('open');
+          btn.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>
